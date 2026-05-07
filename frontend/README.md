@@ -1,70 +1,177 @@
-# Getting Started with Create React App
+# Ethara Task Manager
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack Project & Task Management application built with React.js, FastAPI, and SQLite.
 
-## Available Scripts
+![Dashboard](screenshots/dashboard.png)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React.js + React Router + Recharts |
+| Backend | FastAPI (Python) |
+| Database | SQLite (via SQLAlchemy) |
+| Authentication | JWT Tokens + bcrypt |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## ✨ Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Authentication & User Flow
+- Register with name, email, password and role
+- Login with JWT token-based authentication
+- Protected routes — redirect to login if not authenticated
+- Role-based access — Admin vs User
 
-### `npm run build`
+### Project Management
+- Create, edit, delete projects
+- Project status — Active, Completed, Archived
+- Each project owned by the creator
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Task Management
+- Create, edit, delete tasks
+- Task status — To Do, In Progress, Done
+- Task priority — High, Medium, Low
+- Due date assignment
+- Quick status update inline from table
+- Filter by status and priority
+- Assign tasks to users (Admin only)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Dashboard
+- Summary stats — Total projects, tasks, completed, users
+- Task status pie chart
+- Task priority bar chart
+- Tasks per project bar chart
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Role-Based Access Control
+- **Admin** — View all projects, tasks, users. Assign tasks. Delete users.
+- **User** — View own projects and assigned tasks only
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📸 Screenshots
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Login
+![Login](screenshots/login.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Projects
+![Projects](screenshots/projects.png)
 
-## Learn More
+### Tasks
+![Tasks](screenshots/tasks.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Users (Admin Only)
+![Users](screenshots/users.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## ⚙️ Setup Instructions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Prerequisites
+- Python 3.9+
+- Node.js 18+
 
-### Analyzing the Bundle Size
+### 1. Backend Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload --host 0.0.0.0
+```
 
-### Making a Progressive Web App
+Backend runs at: **http://localhost:8000**  
+API docs: **http://localhost:8000/docs**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 2. Frontend Setup
 
-### Advanced Configuration
+```bash
+cd frontend
+npm install
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Frontend runs at: **http://localhost:3000**
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🔌 API Endpoints
 
-### `npm run build` fails to minify
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/auth/register` | Register new user | Public |
+| POST | `/auth/login` | Login and get token | Public |
+| GET | `/auth/me` | Get current user | User |
+| GET | `/users` | Get all users | Admin |
+| DELETE | `/users/{id}` | Delete user | Admin |
+| GET | `/projects` | Get projects | User |
+| POST | `/projects` | Create project | User |
+| PUT | `/projects/{id}` | Update project | Owner/Admin |
+| DELETE | `/projects/{id}` | Delete project | Owner/Admin |
+| GET | `/tasks` | Get tasks | User |
+| POST | `/tasks` | Create task | User |
+| PUT | `/tasks/{id}` | Update task | User |
+| DELETE | `/tasks/{id}` | Delete task | User |
+| GET | `/dashboard` | Dashboard stats | User |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🗄️ Database Schema
+
+### Users
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Integer PK | Auto increment |
+| full_name | String | User's full name |
+| email | String | Unique email |
+| hashed_password | String | bcrypt hashed |
+| role | String | admin or user |
+| is_active | Boolean | Account status |
+| created_at | DateTime | Registration time |
+
+### Projects
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Integer PK | Auto increment |
+| title | String | Project title |
+| description | Text | Optional description |
+| status | String | active/completed/archived |
+| owner_id | FK → users | Project owner |
+| created_at | DateTime | Creation time |
+
+### Tasks
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Integer PK | Auto increment |
+| title | String | Task title |
+| description | Text | Optional description |
+| status | String | todo/in_progress/done |
+| priority | String | low/medium/high |
+| project_id | FK → projects | Parent project |
+| assignee_id | FK → users | Assigned user |
+| due_date | String | Optional due date |
+| created_at | DateTime | Creation time |
+
+---
+
+## 🧗 Challenges Faced
+
+- **CORS configuration** — Required specific middleware setup in FastAPI to allow React dev server requests
+- **bcrypt compatibility** — Resolved version conflict by downgrading to bcrypt 4.0.1
+- **JWT token flow** — Implemented interceptor in axios to attach token to every request automatically
+- **Role-based UI** — Admin-only routes and conditionally rendered components based on user role stored in localStorage
+- **SQLite relationships** — Cascade delete on project-task relationship to clean up tasks when project is deleted
+
+---
+
+## 👤 Submitted By
+
+**Name:** Kunchapu Dinesh Kullai Swamy
+**Email:** chinnudinesh10@gmail.com
+**College:** Srinivasa Ramanujan Institute of Technology, Anantapur
+**Branch:** Computer Science & Data Science
+**Year of Passing:** 2026
