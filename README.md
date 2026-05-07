@@ -53,7 +53,7 @@ A full-stack Project & Task Management application built with React.js, FastAPI,
 
 ## 📸 Screenshots
 
-### Login
+### Login Page
 ![Login](screenshots/login.png)
 
 ### Dashboard
@@ -84,7 +84,7 @@ pip install -r requirements.txt
 uvicorn main:app --reload --host 0.0.0.0
 ```
 
-Backend runs at: **http://localhost:8000**  
+Backend runs at: **http://localhost:8000**
 API docs: **http://localhost:8000/docs**
 
 ### 2. Frontend Setup
